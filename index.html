@@ -59,7 +59,6 @@
     section .memoList ul.memo li p   {width: 100%;} /*내용*/
     section .memoList ul.memo li button   {display: inline-block; padding: 12px; width: 30px; box-sizing: border-box;} /*버튼*/
     section .memoList ul.memo li button.delBtn   {margin-right: 10px;} /*삭제*/
-    section .memoList ul.memo li button.editBtn   {} /*수정*/
 
 
 
@@ -97,7 +96,6 @@
     newMemo.momoContent = memoCont;
     newMemo.date = `${now.getFullYear()}.${now.getMonth() + 1}.${now.getDate()}`;
     memos.push(newMemo);
-    // ?????????????????????????????????
 
     // 로컬스토리지에 memos 키값으로 저장
     // 로컬스토리지에 id 저장

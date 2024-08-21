@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./css/style.css">
-  <title>MEMO</title>
+  <title>Taeeun's MEMO</title>
 </head>
 <body>
   <div id="wrap">
     <header>
-      <h1 class="logo"><a href="#">♥MEMOMEMO♥</a></h1>
+      <h1 class="logo"><a href="./index2.html">♥MEMOMEMO♥</a></h1>
       <button type="button" class="resetBtn">전체삭제</button>
     </header>
 
@@ -23,7 +23,7 @@
 
       <div class="memoList">
         <ul class="memo">
-          <li>
+          <li id="title">
             <!-- 리스트폼 -->
             <h2>타이틀</h2>
             <span>2024.01.01</span>
@@ -36,138 +36,112 @@
     </section>
   </div>
 
-  <style>
-    *{margin: 0;padding: 0;}
 
 
-    #wrap   {width: 100% ; padding: 15px; box-sizing: border-box; background-color: rgb(253, 244, 233); }
-    header  { width: 100%; }
-    header h1.logo  { margin-bottom: 10px; width: 100%; font-weight: 500; text-align: center;  box-sizing: border-box;}
-    header h1.logo a  { display: block; height: 30px; color: #ff9e43; text-decoration: none; font-family: 'EF_jejudoldam'; font-size: 23px; letter-spacing: 2px; line-height: 30px; }
-    header button   { padding: 2px 3px; width: 60px; font-size: 10px; color: #000; background-color: #fff; font-family: 'YoonChildfundkoreaDaeHan'; border: 0.5px solid #ff7b00; border-radius: 6px; }
+  <script>
+  var memo = {
+    saveBtn : document.querySelector(".saveBtn"),
+    editBtn : document.querySelector(".editContBtn"),
+    tit : document.querySelector(".title"),
+    editor : document.querySelector(".cont"),
+    contWrap : document.querySelector(".memo"),
+    resetBtn : document.querySelector(".resetBtn"),
+    memoInput : document.querySelector(".memoInput"),
+    menoArr : [],
+    save : function(idx){ //저장함수
+      var tit = this.tit.value
+      var cont = this.editor.value.replace(/<br>/g,'\n') //줄바꿈 띄어쓰기로
+      var date = new Date();
+      var dateTxt =  date.getFullYear() + '/' + (date.getMonth() + 1)  + '/' + date.getDate()
 
-    section { margin-top: 15px; width: 100%; }
-    section .memoInput { margin-bottom: 14px; width: 100%; }
-    section .memoInput input,textarea.cont { margin-bottom: 10px; padding: 8px; width: 100%; font-size: 12px; border: none; font-family: 'YoonChildfundkoreaDaeHan'; border-radius: 6px; box-sizing: border-box;}
-    section .memoInput input:focus  {outline: none;}
-    section .memoInput input:focus::placeholder  {color: transparent;}
-    section .memoInput textarea.cont { height: 80px; word-wrap: break-word; }
-    section .memoInput textarea.cont:focus    {outline: none;}
-    section .memoInput textarea.cont:focus::placeholder   {color: transparent;}
-    section .memoInput button { padding: 5px; width: 100%; color: #fff; border: none; background-color: black;   font-family: 'YoonChildfundkoreaDaeHan'; border-radius: 6px;}
-    section .memoInput.save button.saveBtn {display:block}
-    section .memoInput.save button.editContBtn {display:none}
-    section .memoInput.edit button.saveBtn {display:none}
-    section .memoInput.edit button.editContBtn {display:block}
+      console.log(tit.length)
+      if(tit.length <= 0){  //제목없을때
+        alert('제목없음');
+        return false;
+      }
 
-    section .memoList   {width: 100%;}
-    section .memoList ul.memo   {width: 100%;}
-    section .memoList ul.memo li   {position: relative; padding: 10px 10px 35px 10px; margin-bottom: 8px; width: 100%; list-style: none; border: 1px solid rgb(150, 150, 150); border-radius: 8px; box-sizing: border-box;} 
-    section .memoList ul.memo li h2    {width: 100%; font-size: 15px; font-weight: 600; font-family: 'YoonChildfundkoreaDaeHan';} /*제목*/
-    section .memoList ul.memo li span   {display: block; margin-bottom: 5px; width: 100%; font-size: 12px; font-family: 'YoonChildfundkoreaDaeHan';} /*날짜*/
-    section .memoList ul.memo li p   {width: 100%; font-size: 13px; font-family: 'YoonChildfundkoreaDaeHan';} /*내용*/
-    section .memoList ul.memo li button   {position: absolute; bottom: 6px; display: inline-block; padding:3px 8px; width: 40px; font-size: 10px; color: #fff; background-color:#000; border-radius: 8px; outline: none; border: none; letter-spacing: 1.2px; box-sizing: border-box; font-family: 'YoonChildfundkoreaDaeHan';} /*버튼*/
-    section .memoList ul.memo li button.delBtn   {right: 56px;} /*삭제*/
-    section .memoList ul.memo li button.editBtn   {right: 10px;} /*수정*/
+      if(cont.length <= 0){  //내용없을때
+        alert('내용없음');
+        return false;
+      }
 
 
+      if(idx){
+        console.log(idx)
+        console.log(this.menoArr[idx])
+        this.menoArr[idx] = {
+          tit:tit,
+          cont:cont,
+          date : dateTxt,
+        };
+        console.log(this.menoArr[idx])
+      }else{
+        this.menoArr.push({
+          tit:tit,
+          cont:cont,
+          date : dateTxt,
+        });
+      }
+      this.setStorage();
+      memo.write()
+    },
+    write : function(){
+      var txt = "";
+      if(!this.menoArr) this.menoArr = []
+      this.menoArr.forEach((o,i)=>{
+        txt += `
+            <li class="memoLis" data-idx='${i}'>
+              <h2 class="tit">${o.tit}</h2>
+              <span class="date">${o.date}</span>
+              <p class="cont">${o.cont.replace(/\n/g,'<br>')}</p> 
+              <button class="delBtn">삭제</button>
+              <button class="editBtn">수정</button>
+            </li>
+        `
+      })
+      this.contWrap.innerHTML = txt;
 
-  </style>
-
-<script>
-
-
-var memo = {
-  saveBtn : document.querySelector(".saveBtn"),
-  editBtn : document.querySelector(".editContBtn"),
-  tit : document.querySelector(".title"),
-  editor : document.querySelector(".cont"),
-  contWrap : document.querySelector(".memo"),
-  resetBtn : document.querySelector(".resetBtn"),
-  memoInput : document.querySelector(".memoInput"),
-  menoArr : [],
-  save : function(idx){ //저장함수
-    var tit = this.tit.value
-    var cont = this.editor.value.replace(/<br>/g,'\n')
-    var date = new Date();
-    var dateTxt =  date.getFullYear() + '/' + (date.getMonth() + 1)  + '/' + date.getDate()
-
-    if(idx){
-      console.log(idx)
-      console.log(this.menoArr[idx])
-      this.menoArr[idx] = {
-        tit:tit,
-        cont:cont,
-        date : dateTxt,
-      };
-      console.log(this.menoArr[idx])
-    }else{
-      this.menoArr.push({
-        tit:tit,
-        cont:cont,
-        date : dateTxt,
-      });
-    }
-    this.setStorage();
-    memo.write()
-  },
-  write : function(){
-    var txt = "";
-    if(!this.menoArr) this.menoArr = []
-    this.menoArr.forEach((o,i)=>{
-      txt += `
-          <li class="memoLis" data-idx='${i}'>
-            <h2 class="tit">${o.tit}</h2>
-            <span class="date">${o.date}</span>
-            <p class="cont">${o.cont.replace(/\n/g,'<br>')}</p>
-            <button class="delBtn">삭제</button>
-            <button class="editBtn">수정</button>
-          </li>
-      `
-    })
-    this.contWrap.innerHTML = txt;
-
-    this.tit.value = ""
-    this.editor.value = ""
-    this.memoInput.classList.remove('edit');
-    this.memoInput.classList.add('save');
-  },
-  edit : function(btn){ //수정함수
-    var li = btn.closest(".memoLis");
-    var idx = li.dataset.idx;
-    this.memoInput.classList.remove('save');
-    this.memoInput.classList.add('edit');
-    this.memoInput.dataset.idx = idx;
+      this.tit.value = ""
+      this.editor.value = ""
+      this.memoInput.classList.remove('edit');
+      this.memoInput.classList.add('save');
+      
+      this.openClose();  //열닫함수 호출함
+    },
+    edit : function(btn){ //수정함수
+      var li = btn.closest(".memoLis");
+      var idx = li.dataset.idx;
+      this.memoInput.classList.remove('save');
+      this.memoInput.classList.add('edit');
+      this.memoInput.dataset.idx = idx;
 
 
-    var tit = this.menoArr[idx].tit;
-    var cont = this.menoArr[idx].cont;
-    this.tit.value = tit
-    this.editor.value = cont
-  },
-  del : function(btn){ //삭제함수
-    var li = btn.closest(".memoLis");
-    var idx = li.dataset.idx;
-    // this.contWrap.removeChild(li);
-    memo.menoArr.splice(idx,1);
-    this.setStorage();
-    memo.write()
-
-  },
-  events : function(){ //클릭이벤트 저장, 수정, 삭제
-    this.saveBtn.addEventListener('click' , function(){
-      console.log('save')
-      memo.save()
-    })
-    this.editBtn.addEventListener('click' , function(){
-      console.log('edit')
-      memo.save(memo.memoInput.dataset.idx)
-    })
-    this.contWrap.addEventListener('click', function(e){
-      if(e.target.nodeName){
-        var btn = e.target;
-        if(btn.classList.contains("delBtn")){
-          memo.del(btn)
+      var tit = this.menoArr[idx].tit;
+      var cont = this.menoArr[idx].cont;
+      this.tit.value = tit
+      this.editor.value = cont
+    },
+    del : function(btn){ //삭제함수
+      var li = btn.closest(".memoLis");
+      var idx = li.dataset.idx;
+      memo.menoArr.splice(idx,1);
+      this.setStorage();
+      memo.write()
+    },
+    events : function(){ //클릭이벤트 저장, 수정, 삭제
+      this.saveBtn.addEventListener('click' , function(){
+        console.log('save')
+        memo.save()
+      })
+      this.editBtn.addEventListener('click' , function(){
+        console.log('edit')
+        memo.save(memo.memoInput.dataset.idx)
+      })
+      this.contWrap.addEventListener('click', function(e){
+        if(e.target.nodeName){
+          var btn = e.target;
+          if(btn.classList.contains("delBtn")){
+            memo.del(btn)
         }else  if(btn.classList.contains("editBtn")){
           memo.edit(btn)
         }
@@ -185,6 +159,21 @@ var memo = {
   getStorage : function(){
     memo.menoArr =  JSON.parse(localStorage.getItem('memos2'));
   },
+  openClose : function(){  //열렸다 닫혔다
+    const listBoxes = document.querySelectorAll("li");
+    listBoxes.forEach(listBox => { 
+      listBox.addEventListener("click", () => { 
+        if(listBox.classList.contains("open")){
+          listBox.classList.remove("open");
+        }else{
+          listBoxes.forEach(lis => { 
+            lis.classList.remove("open");
+          })
+          listBox.classList.add("open");
+        }
+      });
+    });
+  },
   init : function(){
     this.getStorage();
     this.events();
@@ -194,125 +183,8 @@ var memo = {
 
 memo.init();
 
-
 </script>
-
-
-
 <!-- https://velog.io/@wswy17/JS-Local-Storage-%ED%99%9C%EC%9A%A9%ED%95%B4-%EB%A9%94%EB%AA%A8%EC%9E%A5-%EB%A7%8C%EB%93%A4%EA%B8%B0-zl6p5kzs#-%EC%A0%80%EC%9E%A5-%EC%82%AD%EC%A0%9C-%EC%88%98%EC%A0%95-%EA%B0%80%EB%8A%A5%ED%95%9C-%EB%A9%94%EB%AA%A8%EC%9E%A5-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0 -->
-<script>
-/*
-  const memo = document.querySelector('.memoInput');
-  const list = document.querySelector('.memoList');
 
-  const memoBtn = document.querySelector('.saveBtn');
-  // console.log(memoBtn);
-
-  let memos = JSON.parse(localStorage.getItem('memos'));
-  memos = memos ?? [];
-
-  memoBtn.addEventListener('click', function(){
-    let newMemo = {};
-    let memoTitle = memo.querySelector('.title').value; //input 제목
-    let memoCont = memo.querySelector('.cont').value; //input 내용
-
-    let id = JSON.parse(localStorage.getItem('id'));
-    id = id ?? 0;
-
-    var now = new Date();
-
-    // newMemo 객체에 id, 제목, 내용, 날짜 저장~
-    newMemo.id = id;
-    newMemo.title = memoTitle;
-    newMemo.momoContent = memoCont;
-    newMemo.date = `${now.getFullYear()}.${now.getMonth() + 1}.${now.getDate()}`;
-    memos.push(newMemo);
-    // ?????????????????????????????????
-
-    // 로컬스토리지에 memos 키값으로 저장
-    // 로컬스토리지에 id 저장
-    localStorage.setItem('memos', JSON.stringify(memos));
-    localStorage.setItem('id', JSON.stringify(++id));
-
-    setMemo(); //메모 생성 함수....이따가 나옴
-
-    // 생성 후 입력창 지우기    
-    memo.querySelector('.title').value = null;
-    memo.querySelector('.cont').value = null;
-  });
-
-
-  // 메모 생성
-  function setMemo() {
-    const memoList = list.querySelector('.memo');
-
-    for (let i = memos.length - 1; i >= 0; i--){
-      let memoBox = document.createElement('li');
-      memoBox.setAttribute('data-id', memos[i].id);
-
-      let title = document.createElement('h2');
-      title.textContent = memos[i].title;
-
-      let date = document.createElement('span');
-      date.textContent = memos[i].date;
-
-      let content = document.createElement('p');
-      content.textContent = memos[i].content;
-
-      let delBtn = document.createElement('button');
-      delBtn.textContent = '삭제';
-      delBtn.classList.add('delBtn');
-      delBtn.addEventListener('click', setDeleteBtn, false); //이따가 나올 해당메모 삭제함수 setDeleteBtn() 등록
-
-      let editBtn = document.createElement('button');
-      editBtn.textContent = '수정';
-      editBtn.classList.add('editBtn');
-      editBtn.addEventListener('click', setEditBtn, false); //이따가 나올 해당메모 수정함수 setEditBtn() 등록
-
-      memoBox.append(title, date, content, editBtn, delBtn); //li에 세부항목 붙이기
-      memoList.append(memoBox); //ul에 li붙이기
-    }
-  };
-
-
-
-  // 삭제버튼 = 삭제
-  function setDeleteBtn(e){
-    momos.forEach((a, i) => {
-      //memos 배열의 id를 돌면서 클릭된 애의 id랑 비교함
-      if(a.id == e.target.parentNode.dataset.id){
-        // 클릭된 메모 배열에서 자르기
-        memos.splice(i, 1);
-        // 자른메모 배열 로컬스토리지에 저장
-        localStorage.setItem('memo', JSON.stringify(memos));
-        // 새로 저장된 메모 화면에 보여주기
-        setMemo();
-        return;
-      }
-    });
-  }
-
-
-  // 수정버튼 = 수정
-  function setEditBtn(e){
-    memos.forEach((a, i) => {
-      if(a.id == e.target.parentNode.dataset.id){
-        // 클릭된 메모의 제목, 내용이 메모 쓰는곳에 나타남
-        memo.querySelector('.title').value = a.title;
-        memo.querySelector('.cont').value = a.content;
-        // 클릭된 메모 배열에서 자르기
-        momos.splice(i, 1);
-        // 자른메모 배열 로컬스토리지에 저장ㅇㅇㅇㅇㅇㅇㅇㅇ 먼지모르게따우
-        localStorage.setItem('memo', JSON.strignify(memos));
-        // 메모 화면에 보여주기
-         setMemo();
-         return;
-      }
-    });
-  }
-*/
-
-
-</script>
 </body>
 </html>
