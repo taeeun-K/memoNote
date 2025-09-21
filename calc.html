@@ -12,11 +12,13 @@
 <body>
   <div id="wrap">
     <header>
-      <h1 class="logo"><a href="#">♥가계부♥</a></h1>
+      <h1 class="logo_calc"><a href="#">❤︎ 가계부 ❤︎</a></h1>
       <button type="button" class="resetBtn">전체삭제</button>
     </header>
 <style>
 
+  header h1.logo_calc   {text-align: center;}
+  header h1.logo_calc a   {color: #26ff43; font-size: 28px; font-family: 'Dandan'; text-decoration: none; }
   #result {
     margin-top: 20px;
   }
@@ -123,7 +125,14 @@ $(document).ready(function() {
         const newRecord = { date, content, amount: parseInt(amount) };
         const records = JSON.parse(localStorage.getItem('allowanceRecords')) || [];
         records.push(newRecord);
+        // localStorage.setItem('allowanceRecords', JSON.stringify(records));
+
+        // 아래주석2줄 date 기준 스토리지 정렬이 안되서 추가
+        // 기록을 날짜순으로 정렬
+        records.sort((a, b) => new Date(b.date) - new Date(a.date)); // 내림차순 정렬 (최신 날짜가 위에)
+        // 정렬된 기록을 로컬 스토리지에 저장
         localStorage.setItem('allowanceRecords', JSON.stringify(records));
+
         loadRecords();
         this.reset();
     });
@@ -137,6 +146,7 @@ $(document).ready(function() {
         localStorage.setItem('allowanceRecords', JSON.stringify(records));
         loadRecords();
     });
+
 
     // 전체 삭제 버튼 클릭 시 모든 기록 삭제
     $('.resetBtn').on('click', function() {
@@ -189,7 +199,7 @@ $(document).ready(function() {
     cursor: pointer;
   }
   .resetBtn:hover {
-    background-color: #c0392b;
+    background-color: #26ff43;
   }
   section {
     margin-top: 20px;
@@ -230,7 +240,7 @@ $(document).ready(function() {
   form button {
     margin-top: 15px;
     padding: 10px 15px;
-    background-color: #f19d1f;
+    background-color: #26ff43;
     color: rgb(0, 0, 0);
     border: none;
     border-radius: 8px;
