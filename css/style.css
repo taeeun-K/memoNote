@@ -21,6 +21,27 @@
   font-style: normal;
 }
 
+@font-face {
+    font-family: 'SchoolSafetyStubbyChalk';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2508-2@1.0/HakgyoansimMondangbunfilR.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SchoolSafeAutumnTrip';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/HakgyoansimGaeulsopungL.woff2') format('woff2');
+    font-weight: 300;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'SchoolSafeAutumnTrip';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/HakgyoansimGaeulsopungB.woff2') format('woff2');
+    font-weight: 700;
+    font-display: swap;
+}
+
 
 *{margin: 0;padding: 0;}
 body,html{height: 100%;}

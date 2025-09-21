@@ -7,15 +7,29 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.min.js"></script>
   <link rel="stylesheet" href="./css/style.css">
-  <title>Taeeun's MEMO</title>
+  <title>♥가계부♥</title>
 </head>
 <body>
   <div id="wrap">
     <header>
-      <h1 class="logo"><a href="./index2.html">♥가계부♥</a></h1>
+      <h1 class="logo"><a href="#">♥가계부♥</a></h1>
       <button type="button" class="resetBtn">전체삭제</button>
     </header>
 <style>
+
+  #result {
+    margin-top: 20px;
+  }
+  #result h2 {
+    font-family: 'YoonChildfundkoreaDaeHan';
+    color: rgb(114, 114, 114);
+  }
+
+  #recordList li span { height: 100%; font-size: 14px; font-family: 'SchoolSafetyStubbyChalk'; border-right: 1px dashed #ccc;}
+  #recordList li span.date {flex-grow: 0; width: 100px;}
+  #recordList li span.text {flex: 1; font-size: 16px;}
+  #recordList li span.price {flex-grow: 0; width: 100px; border-right: none;}
+  button.deleteBtn    { width: 20px; height: 20px; line-height: 20px; font-size: 14px; border-radius: 50%; font-weight: 700; background-color: #ff5b91; font-family: 'YoonChildfundkoreaDaeHan';}
 
 </style>
 <section>
@@ -38,18 +52,10 @@
         </fieldset>
       </form>
       <div id="result">
-        <h2>기록된 용돈 내역</h2>
+        <h2>지출내역</h2>
         <ul id="recordList">
           <!-- 기록된 용돈 내역이 여기에 표시됩니다. -->
         </ul>
-      </div>
-    </article>
-    <article id="calendarArticle" style="display:none;">
-      <h2>용돈 달력</h2>
-      <div id="calendar">
-        달력
-        <!-- 달력이 여기에 표시됩니다. -->
-      </div>
     </article>
 <script>
 //  tabMenu 스트립트
@@ -95,10 +101,10 @@ $(document).ready(function() {
         records.forEach((record, index) => {    
             recordList.append(`
                 <li>
-                    <span>${record.date}</span>
-                    <span>${record.content}</span>
-                    <span>${record.amount.toLocaleString()}원</span>
-                    <button type="button" class="deleteBtn" data-index="${index}">삭제</button>
+                    <span class="date">${record.date}</span>
+                    <span class="text">${record.content}</span>
+                    <span class="price">${record.amount.toLocaleString()}원</span>
+                    <button type="button" class="deleteBtn" data-index="${index}">X</button>
                 </li>
             `);
         });
@@ -167,9 +173,6 @@ $(document).ready(function() {
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
   }
   header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 20px;
   }
   .logo a {
@@ -178,10 +181,11 @@ $(document).ready(function() {
     color: #333;
   }
   .resetBtn {
-    background-color: #e74c3c;
-    color: white;
+    display: block;
+    background-color: #ddd;
+    color: #000;
     border: none;
-    padding: 10px 15px;
+    padding: 4px 8px;
     cursor: pointer;
   }
   .resetBtn:hover {
@@ -191,31 +195,50 @@ $(document).ready(function() {
     margin-top: 20px;
   }
   form fieldset {
-    border: 1px solid #ccc;
+    border: 1px dashed #ccc;
+    border-radius: 16px;
     padding: 10px;
     margin-bottom: 20px;
   }
   form legend {
     font-weight: bold;
     padding: 0 5px;
+    color: rgb(114, 114, 114);
+    font-size: 24px;
+    font-family: 'YoonChildfundkoreaDaeHan';
   }
   form label {
     display: block;
     margin-top: 10px;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: 'SchoolSafeAutumnTrip';
   }
   form input {
-    width: calc(100% - 22px);
+    width: 100%;
+    height: 40px;
     padding: 10px;
-    margin-top: 5px;
+    margin-top: 5px;    
+    font-size: 18px;
+    font-weight: 300;
+    font-family: 'SchoolSafeAutumnTrip';
     box-sizing: border-box;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    
   }
   form button {
     margin-top: 15px;
     padding: 10px 15px;
-    background-color: #3498db;
-    color: white;
+    background-color: #f19d1f;
+    color: rgb(0, 0, 0);
     border: none;
+    border-radius: 8px;
     cursor: pointer;
+    
+    font-weight: 700;
+    font-family: 'SchoolSafeAutumnTrip';
+    letter-spacing: 1px;
   }
   form button:hover {
     background-color: #2980b9;
@@ -235,15 +258,12 @@ $(document).ready(function() {
     padding: 10px 0;
   }
   #recordList li span {
-    flex-grow: 1;
     text-align: center;
   }
   /* 버튼 디자인 이쁘게  */
   .deleteBtn {
-    background-color: #e74c3c;
     color: white;
     border: none;
-    padding: 5px 10px;
     cursor: pointer;
   }
 </style>
