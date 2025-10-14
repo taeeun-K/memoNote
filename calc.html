@@ -145,7 +145,7 @@ $(document).ready(function() {
             const recordDate = new Date(record.date);
             return recordDate >= startDate && recordDate <= endDate;
         });
-        
+
         // 필터링된 내역 표시
         filteredRecords.forEach((record, index) => {
             recordList.append(`
@@ -160,15 +160,11 @@ $(document).ready(function() {
 
 
        
-        // 총 지출 금액 계산 및 표시
-        const totalAmount = records.reduce((sum, record) => sum + record.amount, 0);
-        $('#result .top').html(`
-            <h2>지출내역</h2>
-            <strong>총 지출: ${totalAmount.toLocaleString()}원</strong>
-        `);
-        if (records.length === 0) {
-            recordList.append('<li>기록된 내역이 없습니다.</li>');
-        }
+        // 총 지출 금액 계산 및 표시 
+        const totalAmount = filteredRecords.reduce((sum, record) => sum + record.amount, 0);
+        $('#result .top strong').remove();
+        $('#result .top').append(`<strong>총 지출: ${totalAmount.toLocaleString()}원</strong>`);  
+          
         // 주별 지출 내역 표시
         loadWeeklyRecords(records);
         // 월별 지출 내역 표시
