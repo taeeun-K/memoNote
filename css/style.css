@@ -15,7 +15,7 @@
 }
 
 @font-face {
-  font-family: 'YoonChildfundkoreaDaeHan';
+  font-family: 'DaeguBukseongro';
   src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/YoonChildfundkoreaDaeHan.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
@@ -47,23 +47,46 @@
     src: url('./../font/OkDanDan-Bold.ttf') format('truetype');
 }
 
+
+/* 20251118 추가 */
+@font-face {
+    font-family: 'DaeguBukseongro';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2511-1@1.0/DaeguBukseongro-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'DaeguBukseongro';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2511-1@1.0/DaeguBukseongro-ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'KyoboHandwriting2019';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/KyoboHand.woff') format('woff');
+    font-weight: normal;
+    font-display: swap;
+}
+
 *{margin: 0;padding: 0;}
 body,html{height: 100%;}
 #wrap   {width: 100% ; min-height: 100vh; padding: 15px; box-sizing: border-box; background-color: rgb(253, 244, 233); }
-header  { width: 100%; }
-header h1.logo  { margin-bottom: 10px; width: 100%; font-weight: 500; text-align: center;  box-sizing: border-box;}
-header h1.logo a  { display: block; height: 30px; color: #ff9e43; text-decoration: none; font-family: 'EF_jejudoldam'; font-size: 23px; letter-spacing: 2px; line-height: 30px; }
-header button   { padding: 2px 3px; width: 60px; font-size: 10px; color: #000; background-color: #fff; font-family: 'YoonChildfundkoreaDaeHan'; border: 0.5px solid #ff7b00; border-radius: 6px; }
+header  { width: 100%;  max-width: 600px; margin: 0 auto;}
+header h1.logo  {padding: 4px 4px 2px 4px; margin-bottom: 10px; width: fit-content; font-weight: 500; text-align: center;  box-sizing: border-box; margin: auto; background: #ff7b00;}
+header h1.logo a  { display: block; height: 30px; color: #fff; text-decoration: none; font-family: 'DaeguBukseongro'; font-weight: 800; font-size: 23px; letter-spacing: 2px; line-height: 30px; }
+header button   { padding: 5px 8px;  font-size: 10px; color: #000; background-color: #fff; font-family: 'DaeguBukseongro'; border: 0.5px solid #ff7b00; border-radius: 10px; font-family: 'KyoboHandwriting2019'; letter-spacing: 1.2px; box-sizing: border-box; cursor: pointer;}
 
-section { margin-top: 15px; width: 100%; }
-section .memoInput { margin-bottom: 14px; width: 100%; }
-section .memoInput input,textarea.cont { margin-bottom: 10px; padding: 8px; width: 100%; font-size: 12px; border: none; font-family: 'YoonChildfundkoreaDaeHan'; border-radius: 6px; box-sizing: border-box;}
+section { max-width: 600px; margin: 20px auto 0; width: 100%; }
+section .memoInput { margin-bottom: 30px; width: 100%; }
+section .memoInput input,textarea.cont { margin-bottom: 10px; padding: 8px; width: 100%; font-size: 12px; border: none; font-family: 'KyoboHandwriting2019'; letter-spacing: 1.5px;  border-radius: 6px; box-sizing: border-box;}
 section .memoInput input:focus  {outline: none;}
 section .memoInput input:focus::placeholder  {color: transparent;}
-section .memoInput textarea.cont { height: 80px; word-wrap: break-word; }
+section .memoInput textarea.cont { height: 140px; word-wrap: break-word; }
 section .memoInput textarea.cont:focus    {outline: none;}
 section .memoInput textarea.cont:focus::placeholder   {color: transparent;}
-section .memoInput button { padding: 5px; width: 100%; color: #fff; border: none; background-color: black;   font-family: 'YoonChildfundkoreaDaeHan'; border-radius: 6px;}
+section .memoInput button { padding: 5px; width: 300px; margin: 0 auto; color: #fff; border: none; background: #ff7b00; font-family: 'DaeguBukseongro'; font-weight: 600; border-radius: 6px; letter-spacing: 1.5px;}
 section .memoInput.save button.saveBtn {display:block}
 section .memoInput.save button.editContBtn {display:none}
 section .memoInput.edit button.saveBtn {display:none}
@@ -72,10 +95,10 @@ section .memoInput.edit button.editContBtn {display:block}
 section .memoList   {width: 100%;}
 section .memoList ul.memo   {width: 100%;}
 section .memoList ul.memo li   {position: relative; padding: 10px 10px 10px 10px; margin-bottom: 8px; width: 100%; list-style: none; border: 1px solid rgb(150, 150, 150); border-radius: 8px; box-sizing: border-box; background-color: #fff; cursor: pointer;} 
-section .memoList ul.memo li h2    {width: 100%; font-size: 15px; font-weight: 600; font-family: 'YoonChildfundkoreaDaeHan';} /*제목*/
-section .memoList ul.memo li span   {display: none; margin-bottom: 5px; width: 100%; font-size: 12px; font-family: 'YoonChildfundkoreaDaeHan';} /*날짜*/
-section .memoList ul.memo li p   {display: none; width: 100%; font-size: 13px; font-family: 'YoonChildfundkoreaDaeHan';} /*내용*/
-section .memoList ul.memo li button   {position: absolute; bottom: 6px; display: none; padding:3px 8px; width: 40px; font-size: 10px; color: #fff; background-color:#000; border-radius: 8px; outline: none; border: none; letter-spacing: 1.2px; box-sizing: border-box; font-family: 'YoonChildfundkoreaDaeHan';} /*버튼*/
+section .memoList ul.memo li h2    {width: 100%; font-size: 15px; font-weight: 600; font-family: 'DaeguBukseongro';} /*제목*/
+section .memoList ul.memo li span   {display: none; margin-bottom: 5px; width: 100%; font-size: 12px; font-family: 'DaeguBukseongro';} /*날짜*/
+section .memoList ul.memo li p   {display: none; width: 100%; font-size: 13px; font-family: 'DaeguBukseongro';} /*내용*/
+section .memoList ul.memo li button   {position: absolute; bottom: 6px; display: none; padding:3px 8px; width: 40px; font-size: 10px; color: #fff; background-color:#000; border-radius: 8px; outline: none; border: none; letter-spacing: 1.2px; box-sizing: border-box; font-family: 'DaeguBukseongro';} /*버튼*/
 section .memoList ul.memo li button.delBtn   {right: 56px;} /*삭제*/
 section .memoList ul.memo li button.editBtn   {right: 10px;} /*수정*/
 
