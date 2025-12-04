@@ -39,7 +39,11 @@
 
 
   <script>
-    location.href="./password/index.html"
+
+    if (localStorage.getItem("memoAccess") !== "ok") {
+      location.href="./password/index.html"
+    }
+
     
   var memo = {
     saveBtn : document.querySelector(".saveBtn"),
