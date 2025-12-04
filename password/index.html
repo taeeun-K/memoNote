@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>password 입력</title>
+  <style>
+    *{margin: 0; padding: 0; box-sizing: border-box;}
+    body {display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: Arial, sans-serif; background-color: #f4f4f4; }
+
+    h1 {text-align: center; margin-bottom: 20px; color: #333;}
+    form {max-width: 400px; margin: 0 auto; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);}
+
+    label {display: block; margin-bottom: 10px; font-weight: bold; color: #555;}
+    input[type="password"] {width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px;}
+    button {width: 100%; padding: 10px; background-color: #4ca7fd; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer;}
+    p#msg {margin-top: 10px; font-size: 12px; font-weight: bold;}
+    span#hint {display: block; color: #777777; font-size: 10px; text-align: right;}
+  </style>
+</head>
+<body>
+  <h1>password</h1>
+  <form id="pwForm">
+    <label for="userPassword">비밀번호 입력:</label>
+    <input type="password" id="userPassword" name="userPassword" placeholder="비밀번호를 입력하세요">
+    <button type="submit">확인</button>
+    <p id="msg" style="color: red; margin-top: 10px;"></p>
+  </form>
+  
+
+  <!-- script type 1 -->
+  <!-- <script>
+    document.addEventListener("DOMContentLoaded", function(){
+      const form = document.querySelector("form");
+      form.addEventListener("submit", function(event){
+        const yourPassword = '비밀번호설정';
+        event.preventDefault();
+        const passwordInput = document.getElementById("userPassword").value;
+        if(passwordInput === yourPassword){ // 여기에 실제 비밀번호 입력
+          alert("비밀번호가 일치합니다.");
+          alert("접속!");
+          location.href = "https://taeeun-k.github.io/memoNote/";
+          // 추가 동작 수행 가능
+        } else {
+          alert("비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
+        }
+      }); 
+    });
+  </script> -->
+
+  <!-- script type 2 - Hash코드 비교 -->
+  <!-- <script>
+  async function sha256(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+  }
+
+  const PASSWORD_HASH = "18e87bc99ee1d95be135acda0fdcc58526ac04c7a09292a4534d636b52232f67";
+
+  async function check() {
+    const input = prompt("비밀번호 입력:");
+    const hash = await sha256(input);
+
+    if (hash === PASSWORD_HASH) {
+      alert("비밀번호 일치. 사이트에 접속합니다.");
+      location.href = "https://taeeun-k.github.io/memoNote/";
+    } else {
+      alert("비밀번호 틀림!");
+    }
+  }
+
+  check();
+</script> -->
+
+<!-- script type3 - 1,2 혼합 -->
+<script>
+  // SHA-256 해시 생성 함수
+  async function sha256(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+  }
+
+  const PASSWORD_HASH = "18e87bc99ee1d95be135acda0fdcc58526ac04c7a09292a4534d636b52232f67";
+
+  document.getElementById("pwForm").addEventListener("submit", async function(e) {
+    e.preventDefault(); // form 기본 전송 막기
+
+    const pw = document.getElementById("userPassword").value;
+    const inputHash = await sha256(pw);
+
+    if (inputHash === PASSWORD_HASH) {
+      alert("비밀번호일치. 사이트로 이동합니다!");
+      location.href = "https://taeeun-k.github.io/memoNote/";
+    } else {
+      const msgElement = document.getElementById("msg");
+      msgElement.textContent = "비밀번호가 틀렸습니다!";
+      
+      // 힌트 span 요소가 없으면 추가
+      if (!document.getElementById("hint")) {
+        const hintSpan = document.createElement("span");
+        hintSpan.id = "hint";
+        hintSpan.textContent = " 힌트: 1234번 생일";
+        msgElement.appendChild(hintSpan);
+      }
+    }
+  });
+</script>
+
+
+    <!-- // 메모노트 파일에 location.href="./password/index.html" 적용해야함
+
+    // 18e87bc99ee1d95be135acda0fdcc58526ac04c7a09292a4534d636b52232f67
+    // console.log
+    // async function sha256(message) {
+    //   const msgBuffer = new TextEncoder().encode(message);
+    //   const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+    //   const hashArray = Array.from(new Uint8Array(hashBuffer));
+    //   return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+    // }
+
+    // sha256("0928091007250105").then(console.log); -->
+
+
+  
+</body>
+</html>
