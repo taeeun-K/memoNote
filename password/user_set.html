@@ -52,7 +52,7 @@
     }
     //초기 비밀번호 기본값
     if(!sessionStorage.getItem("memoAccess2")){
-      sessionStorage.setItem("memoAccess2", "18e87bc99ee1d95be135acda0fdcc58526ac04c7a09292a4534d636b52232f67");
+      sessionStorage.setItem("memoAccess2", "bbb3cb7e622c12f9399c023789d8662c2668faa0d51fc916ff9a2f94d561356c");
     }
     
     const userInput = document.querySelector('#userPassword');  //비밀번호 입력창
@@ -124,7 +124,14 @@
       }else{
         alert('비밀번호가 일치하지 않습니다. 다시 시도해 주세요');
         userInput.focus();
-        userInput.value = '';
+        userInput.value = '';  
+        
+        // 힌트 span 요소가 없으면 추가
+        if (!document.getElementById("hint")) {
+          const hintSpan = document.createElement("span");
+          hintSpan.id = "hint";
+          hintSpan.textContent = " 힌트: 결혼식00";
+          msgElement.appendChild(hintSpan);
       }
     });
 
@@ -149,5 +156,6 @@
 </body>
 
 </html>
+
 
 
