@@ -93,7 +93,7 @@
     const inputHash = await sha256(pw);
 
     if (inputHash === PASSWORD_HASH) {
-      localStorage.setItem("memoAccess", "ok");
+      sessionStorage.setItem("memoAccess", "ok");
       
       alert("비밀번호일치. 사이트로 이동합니다!");
       location.href = "https://taeeun-k.github.io/memoNote/";
@@ -131,3 +131,4 @@
 </body>
 
 </html>
+
