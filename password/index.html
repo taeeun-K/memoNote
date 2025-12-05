@@ -76,6 +76,20 @@
 
 <!-- script type3 - 1,2 혼합 -->
 <script>
+    
+    // 메모노트 파일에 location.href="./password/index.html" 적용해야함
+
+    // 18e87bc99ee1d95be135acda0fdcc58526ac04c7a09292a4534d636b52232f67
+    // console.log
+    // async function sha256(message) {
+    //   const msgBuffer = new TextEncoder().encode(message);
+    //   const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+    //   const hashArray = Array.from(new Uint8Array(hashBuffer));
+    //   return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+    // }
+
+    // sha256("비밀번호").then(console.log);
+  
   // SHA-256 해시 생성 함수
   async function sha256(message) {
     const msgBuffer = new TextEncoder().encode(message);
@@ -114,26 +128,9 @@
     }
   });
 </script>
-
-
-
-
-
-    // console.log
-    // async function sha256(message) {
-    //   const msgBuffer = new TextEncoder().encode(message);
-    //   const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
-    //   const hashArray = Array.from(new Uint8Array(hashBuffer));
-    //   return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
-    // }
-
-    // sha256("비밀번호").then(console.log); -->
-
-
-  
 </body>
-
 </html>
+
 
 
 
