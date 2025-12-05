@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>password 설정</title>
+  <style>
+    *{margin: 0; padding: 0; box-sizing: border-box;}
+    body {display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: Arial, sans-serif; background-color: #f4f4f4; }
+    button  {cursor: pointer;}
+
+    input::placeholder {font-size: 14px; }
+    .inputErr::placeholder { color: rgb(255, 0, 0); }
+
+    h1 {text-align: center; margin-bottom: 20px; color: #333;}
+    form {max-width: 400px; margin: 0 auto; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);}
+
+    label {display: block; margin-bottom: 10px; font-weight: bold; color: #555;}
+    input[type="password"] {width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px;}
+    button.btn_submit {width: 100%; padding: 10px; background-color: #4ca7fd; color: white; border: none; border-radius: 4px; font-size: 16px;}
+    p#msg {margin-top: 10px; font-size: 12px; font-weight: bold;}
+    span#hint {display: block; color: #777777; font-size: 10px; text-align: right;}
+
+    .btn_set  {width: 100%; text-align: right;}
+    .btn_set button.resetting  {background: none; outline: none; border: none; font-size: 10px;}
+  </style>
+</head>
+<body>
+  <h1>password</h1>
+  <form id="pwForm">
+    <label for="userPassword">비밀번호 입력:</label>
+    <input type="password" id="userPassword" name="userPassword" placeholder="비밀번호를 입력하세요">
+    <button type="submit" class="btn_submit">확인</button>
+    <p id="msg" style="color: red; margin-top: 10px;"></p>
+
+    <div class="btn_set">
+      <button type="button" class="resetting">비밀번호 재설정</button>
+    </div>
+  </form>
+  
+
+<script>
+  // 비밀번호 재설정 버튼 이벤트
+  document.addEventListener("DOMContentLoaded", function(){
+
+    // SHA-256 해시 생성 함수
+    async function sha256(message) {
+      const msgBuffer = new TextEncoder().encode(message);
+      const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+    }
+    //초기 비밀번호 기본값
+    if(!sessionStorage.getItem("memoAccess2")){
+      sessionStorage.setItem("memoAccess2", "18e87bc99ee1d95be135acda0fdcc58526ac04c7a09292a4534d636b52232f67");
+    }
+    
+    const userInput = document.querySelector('#userPassword');  //비밀번호 입력창
+    const btnSubmit = document.querySelector('button.btn_submit');  //확인 버튼
+    const resetPwBtn = document.querySelector('button.resetting');  //비밀번호 재설정 버튼
+
+    let resetMode = false; //재설정모드인지 확인하기위한 플래그
+
+    //form submit 이벤트 처리
+    document.getElementById('pwForm').addEventListener('submit', function(e){
+      e.preventDefault(); //form 기본 전송 막기
+    });
+
+    //로그인 확인버튼 클릭 시
+    btnSubmit.addEventListener('click', async function(e){
+      e.preventDefault(); //버튼 기본 동작 방지
+      //저장된 비밀번호 불러오기
+      const savePw = sessionStorage.getItem('memoAccess2');
+      const inputPw = userInput.value.trim(); //사용자 입력값 공백제거 및 inputPw 변수에 할당
+
+      //재설정 모드일때!!!
+      if(resetMode){
+
+        //입력값 없는경우 체크
+        if(inputPw === ""){
+          alert('비밀번호를 입력해 주세요');
+          userInput.placeholder = "비밀번호를 입력하세요 (필수)";
+          userInput.classList.add("inputErr");
+          userInput.focus();
+          return;
+        }
+        userInput.classList.remove("inputErr");
+
+        //입력값을 해시로 변환하여 저장
+        const hashedPw = await sha256(inputPw);
+        sessionStorage.setItem("memoAccess2", hashedPw);
+        alert('비밀번호가 재설정 되었습니다. 로그인 해주세요.');
+
+        //플래그 초기화 및 입력창 초기화
+        resetMode = false;
+        userInput.placeholder = "비밀번호를 입력하세요";
+        userInput.focus();
+        userInput.value = '';
+        return;
+      }
+
+      // 일반 로그인 모드 빈값처리
+      if (inputPw === "") {
+        alert("비밀번호를 입력해주세요."); 
+        
+        // inputErr 클래스 추가
+        userInput.classList.add("inputErr");
+        userInput.placeholder = "비밀번호를 입력하세요 (필수)";
+        userInput.focus();
+        return;   // 아래 비교문 실행하지 않도록 종료
+      }
+
+      // inputErr 클래스 제거
+      userInput.classList.remove("inputErr");
+
+      //입력값을 해시로 변환하여 비교
+      const inputHash = await sha256(inputPw);
+      
+      //정상 로그인 처리
+      if(inputHash === savePw){
+        alert('로그인 성공! 페이지로 이동합니다.');
+        location.href = "https://taeeun-k.github.io/memoNote/";
+      }else{
+        alert('비밀번호가 일치하지 않습니다. 다시 시도해 주세요');
+        userInput.focus();
+        userInput.value = '';
+      }
+    });
+
+
+
+
+    //비밀번호 재설정 버튼 클릭시
+    resetPwBtn.addEventListener('click', function(){
+      //재설정 확인 알림창
+      const resetAlarm = confirm('비밀번호를 재설정 하시겠습니까? 기존 비밀번호는 삭제됩니다.');
+      if(!resetAlarm) return;  // 취소 클릭시 함수 종료.
+
+      resetMode = true;  //재설정 모드 플래그 true로 변경
+      userInput.placeholder = "새로운 비밀번호를 입력하세요";
+      userInput.focus();
+      userInput.value = '';
+
+      
+    });
+  });  
+</script>
+</body>
+</html>
