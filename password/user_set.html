@@ -43,17 +43,9 @@
   // 비밀번호 재설정 버튼 이벤트
   document.addEventListener("DOMContentLoaded", function(){
 
-    // SHA-256 해시 생성 함수
-    async function sha256(message) {
-      const msgBuffer = new TextEncoder().encode(message);
-      const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
-    }
     //초기 비밀번호 기본값
-    if(!localStorage.getItem("hashPw")){
-      //이게 진짜임 password/index.html 값이랑 다름!! 참고!!
-      localStorage.setItem("hashPw", "a1a03f5dcf6ab85685b4d91c8e874448703ea5e9829f634a5f02f9522e183c5b");
+    if(!localStorage.getItem("firstPw")){
+      localStorage.setItem("firstPw", "1004");
     }
     
     const userInput = document.querySelector('#userPassword');  //비밀번호 입력창
@@ -71,7 +63,7 @@
     btnSubmit.addEventListener('click', async function(e){
       e.preventDefault(); //버튼 기본 동작 방지
       //저장된 비밀번호 불러오기
-      const savePw = localStorage.getItem('hashPw');
+      const savePw = localStorage.getItem('firstPw');
       const inputPw = userInput.value.trim(); //사용자 입력값 공백제거 및 inputPw 변수에 할당
 
       //재설정 모드일때!!!
@@ -88,8 +80,7 @@
         userInput.classList.remove("inputErr");
 
         //입력값을 해시로 변환하여 저장
-        const hashedPw = await sha256(inputPw);
-        localStorage.setItem("hashPw", hashedPw);
+        localStorage.setItem("firstPw", inputPw);
         alert('비밀번호가 재설정 되었습니다. 로그인 해주세요.');
 
         //플래그 초기화 및 입력창 초기화
@@ -114,11 +105,9 @@
       // inputErr 클래스 제거
       userInput.classList.remove("inputErr");
 
-      //입력값을 해시로 변환하여 비교
-      const inputHash = await sha256(inputPw);
       
       //정상 로그인 처리
-      if(inputHash === savePw){
+      if(inputPw === savePw){
         sessionStorage.setItem("memoAccess2", "ok");
         alert('로그인 성공! 페이지로 이동합니다.');
         location.href = "https://taeeun-k.github.io/memoNote/index.html";
