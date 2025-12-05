@@ -51,8 +51,9 @@
       return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
     }
     //초기 비밀번호 기본값
-    if(!sessionStorage.getItem("hashPw")){
-      sessionStorage.setItem("hashPw", "ea8b0bbd92e422da8b057af612ae122acb1adf938777330b60fd713cf35e3640");
+    if(!localStorage.getItem("hashPw")){
+      //이게 진짜임 password/index.html 값이랑 다름!! 참고!!
+      localStorage.setItem("hashPw", "ea8b0bbd92e422da8b057af612ae122acb1adf938777330b60fd713cf35e3640");
     }
     
     const userInput = document.querySelector('#userPassword');  //비밀번호 입력창
@@ -70,7 +71,7 @@
     btnSubmit.addEventListener('click', async function(e){
       e.preventDefault(); //버튼 기본 동작 방지
       //저장된 비밀번호 불러오기
-      const savePw = sessionStorage.getItem('hashPw');
+      const savePw = localStorage.getItem('hashPw');
       const inputPw = userInput.value.trim(); //사용자 입력값 공백제거 및 inputPw 변수에 할당
 
       //재설정 모드일때!!!
@@ -88,7 +89,7 @@
 
         //입력값을 해시로 변환하여 저장
         const hashedPw = await sha256(inputPw);
-        sessionStorage.setItem("hashPw", hashedPw);
+        localStorage.setItem("hashPw", hashedPw);
         alert('비밀번호가 재설정 되었습니다. 로그인 해주세요.');
 
         //플래그 초기화 및 입력창 초기화
