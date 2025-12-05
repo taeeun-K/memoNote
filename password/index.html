@@ -100,7 +100,7 @@
     return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
   }
 
-  const PASSWORD_HASH = "18e87bc99ee1d95be135acda0fdcc58526ac04c7a09292a4534d636b52232f67";
+  const PASSWORD_HASH = "bbb3cb7e622c12f9399c023789d8662c2668faa0d51fc916ff9a2f94d561356c";
 
   document.getElementById("pwForm").addEventListener("submit", async function(e) {
     e.preventDefault(); // form 기본 전송 막기
@@ -124,7 +124,7 @@
       if (!document.getElementById("hint")) {
         const hintSpan = document.createElement("span");
         hintSpan.id = "hint";
-        hintSpan.textContent = " 힌트: 1234번 생일";
+        hintSpan.textContent = " 힌트: 결혼식00";
         msgElement.appendChild(hintSpan);
       }
     }
@@ -132,6 +132,7 @@
 </script>
 </body>
 </html>
+
 
 
 
