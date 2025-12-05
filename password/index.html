@@ -94,6 +94,9 @@
 
     if (inputHash === PASSWORD_HASH) {
       sessionStorage.setItem("memoAccess", "ok");
+      //페이지 열때마다 체크 -> sessionStorage.setItem("memoAccess")
+      //최초 1회 체크 -> sessionStorage.setItem("memoAccess")
+      //메모장페이지에서는 getItem으로 체크해서 접근 허용
       
       alert("비밀번호일치. 사이트로 이동합니다!");
       location.href = "https://taeeun-k.github.io/memoNote/";
@@ -131,5 +134,6 @@
 </body>
 
 </html>
+
 
 
