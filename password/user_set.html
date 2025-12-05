@@ -51,8 +51,8 @@
       return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
     }
     //초기 비밀번호 기본값
-    if(!sessionStorage.getItem("memoAccess2")){
-      sessionStorage.setItem("memoAccess2", "bbb3cb7e622c12f9399c023789d8662c2668faa0d51fc916ff9a2f94d561356c");
+    if(!sessionStorage.getItem("hashPw")){
+      sessionStorage.setItem("hashPw", "bbb3cb7e622c12f9399c023789d8662c2668faa0d51fc916ff9a2f94d561356c");
     }
     
     const userInput = document.querySelector('#userPassword');  //비밀번호 입력창
@@ -70,7 +70,7 @@
     btnSubmit.addEventListener('click', async function(e){
       e.preventDefault(); //버튼 기본 동작 방지
       //저장된 비밀번호 불러오기
-      const savePw = sessionStorage.getItem('memoAccess2');
+      const savePw = sessionStorage.getItem('hashPw');
       const inputPw = userInput.value.trim(); //사용자 입력값 공백제거 및 inputPw 변수에 할당
 
       //재설정 모드일때!!!
@@ -124,14 +124,18 @@
       }else{
         alert('비밀번호가 일치하지 않습니다. 다시 시도해 주세요');
         userInput.focus();
-        userInput.value = '';  
-        
+        userInput.value = '';
+
+        const msgElement = document.getElementById("msg");
+        msgElement.textContent = "비밀번호가 틀렸습니다!";
+              
         // 힌트 span 요소가 없으면 추가
         if (!document.getElementById("hint")) {
           const hintSpan = document.createElement("span");
           hintSpan.id = "hint";
           hintSpan.textContent = " 힌트: 결혼식00";
           msgElement.appendChild(hintSpan);
+        }
       }
     });
 
@@ -154,8 +158,4 @@
   });  
 </script>
 </body>
-
 </html>
-
-
-
