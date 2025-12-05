@@ -40,112 +40,112 @@
   
 
 <script>
-  // 비밀번호 재설정 버튼 이벤트
-  document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", function(){
 
-    //초기 비밀번호 기본값
-    if(!localStorage.getItem("firstPw")){
-      localStorage.setItem("firstPw", "1004");
-    }
-    
-    const userInput = document.querySelector('#userPassword');  //비밀번호 입력창
-    const btnSubmit = document.querySelector('button.btn_submit');  //확인 버튼
-    const resetPwBtn = document.querySelector('button.resetting');  //비밀번호 재설정 버튼
+  // SHA-256 함수
+  async function sha256(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+  }
 
-    let resetMode = false; //재설정모드인지 확인하기위한 플래그
+  // 최초 비밀번호 저장 (평문)
+  if (!localStorage.getItem("firstPw")) {
+    localStorage.setItem("firstPw", "1004");
+    localStorage.setItem("isHashMode", "false"); // 처음은 평문모드
+  }
 
-    //form submit 이벤트 처리
-    document.getElementById('pwForm').addEventListener('submit', function(e){
-      e.preventDefault(); //form 기본 전송 막기
-    });
+  const userInput = document.querySelector('#userPassword');
+  const btnSubmit = document.querySelector('button.btn_submit');
+  const resetPwBtn = document.querySelector('button.resetting');
 
-    //로그인 확인버튼 클릭 시
-    btnSubmit.addEventListener('click', async function(e){
-      e.preventDefault(); //버튼 기본 동작 방지
-      //저장된 비밀번호 불러오기
-      const savePw = localStorage.getItem('firstPw');
-      const inputPw = userInput.value.trim(); //사용자 입력값 공백제거 및 inputPw 변수에 할당
+  let resetMode = false;
 
-      //재설정 모드일때!!!
-      if(resetMode){
+  document.getElementById('pwForm').addEventListener('submit', e => e.preventDefault());
 
-        //입력값 없는경우 체크
-        if(inputPw === ""){
-          alert('비밀번호를 입력해 주세요');
-          userInput.placeholder = "비밀번호를 입력하세요 (필수)";
-          userInput.classList.add("inputErr");
-          userInput.focus();
-          return;
-        }
-        userInput.classList.remove("inputErr");
+  btnSubmit.addEventListener('click', async function(e){
+    e.preventDefault();
 
-        //입력값을 해시로 변환하여 저장
-        localStorage.setItem("firstPw", inputPw);
-        alert('비밀번호가 재설정 되었습니다. 로그인 해주세요.');
+    const savePw = localStorage.getItem('firstPw');
+    const isHashMode = localStorage.getItem("isHashMode");
+    const inputPw = userInput.value.trim();
 
-        //플래그 초기화 및 입력창 초기화
-        resetMode = false;
-        userInput.placeholder = "비밀번호를 입력하세요";
+    // 재설정 모드일 때
+    if(resetMode){
+
+      if(inputPw === ""){
+        alert('비밀번호를 입력해 주세요');
+        userInput.placeholder = "비밀번호를 입력하세요 (필수)";
+        userInput.classList.add("inputErr");
         userInput.focus();
-        userInput.value = '';
         return;
       }
 
-      // 일반 로그인 모드 빈값처리
-      if (inputPw === "") {
-        alert("비밀번호를 입력해주세요."); 
-        
-        // inputErr 클래스 추가
-        userInput.classList.add("inputErr");
-        userInput.placeholder = "비밀번호를 입력하세요 (필수)";
-        userInput.focus();
-        return;   // 아래 비교문 실행하지 않도록 종료
-      }
-
-      // inputErr 클래스 제거
       userInput.classList.remove("inputErr");
 
-      
-      //정상 로그인 처리
-      if(inputPw === savePw){
-        sessionStorage.setItem("memoAccess2", "ok");
-        alert('로그인 성공! 페이지로 이동합니다.');
-        location.href = "https://taeeun-k.github.io/memoNote/index.html";
-      }else{
-        alert('비밀번호가 일치하지 않습니다. 다시 시도해 주세요');
-        userInput.focus();
-        userInput.value = '';
+      // 재설정된 비밀번호는 해시로 저장
+      const hashedPw = await sha256(inputPw);
+      localStorage.setItem("firstPw", hashedPw);
+      localStorage.setItem("isHashMode", "true");
 
-        const msgElement = document.getElementById("msg");
-        msgElement.textContent = "비밀번호가 틀렸습니다!";
-              
-        // 힌트 span 요소가 없으면 추가
-        if (!document.getElementById("hint")) {
-          const hintSpan = document.createElement("span");
-          hintSpan.id = "hint";
-          hintSpan.textContent = " 힌트: 결혼식00";
-          msgElement.appendChild(hintSpan);
-        }
-      }
-    });
+      alert('비밀번호가 재설정 되었습니다. 로그인 해주세요.');
 
-
-
-
-    //비밀번호 재설정 버튼 클릭시
-    resetPwBtn.addEventListener('click', function(){
-      //재설정 확인 알림창
-      const resetAlarm = confirm('비밀번호를 재설정 하시겠습니까? 기존 비밀번호는 삭제됩니다.');
-      if(!resetAlarm) return;  // 취소 클릭시 함수 종료.
-
-      resetMode = true;  //재설정 모드 플래그 true로 변경
-      userInput.placeholder = "새로운 비밀번호를 입력하세요";
-      userInput.focus();
+      resetMode = false;
+      userInput.placeholder = "비밀번호를 입력하세요";
       userInput.value = '';
+      userInput.focus();
+      return;
+    }
 
-      
-    });
-  });  
+    // 로그인 시 빈 값 체크
+    if(inputPw === ""){
+      alert("비밀번호를 입력해주세요.");
+      userInput.classList.add("inputErr");
+      return;
+    }
+    userInput.classList.remove("inputErr");
+
+    // 로그인 비교 로직
+    let comparePw = inputPw;
+
+    if (isHashMode === "true") {
+      comparePw = await sha256(inputPw); // 해시 비교
+    }
+
+    if (comparePw === savePw) {
+      sessionStorage.setItem("memoAccess2", "ok");
+      alert('로그인 성공! 페이지로 이동합니다.');
+      location.href = "https://taeeun-k.github.io/memoNote/index.html";
+    } else {
+      alert('비밀번호가 일치하지 않습니다. 다시 시도해 주세요');
+      userInput.value = '';
+      userInput.focus();
+
+      const msgElement = document.getElementById("msg");
+      msgElement.textContent = "비밀번호가 틀렸습니다!";
+
+      if (!document.getElementById("hint")) {
+        const hintSpan = document.createElement("span");
+        hintSpan.id = "hint";
+        hintSpan.textContent = " 힌트: angel";
+        msgElement.appendChild(hintSpan);
+      }
+    }
+  });
+
+  resetPwBtn.addEventListener('click', function(){
+    const resetAlarm = confirm('비밀번호를 재설정 하시겠습니까? 기존 비밀번호는 삭제됩니다.');
+    if(!resetAlarm) return;
+
+    resetMode = true;
+    userInput.placeholder = "새로운 비밀번호를 입력하세요";
+    userInput.value = '';
+    userInput.focus();
+  });
+
+});
 </script>
+
 </body>
 </html>
