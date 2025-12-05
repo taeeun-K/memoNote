@@ -134,10 +134,30 @@ document.addEventListener("DOMContentLoaded", function(){
     }
   });
 
-  resetPwBtn.addEventListener('click', function(){
-    const resetAlarm = confirm('비밀번호를 재설정 하시겠습니까? 기존 비밀번호는 삭제됩니다.');
+  resetPwBtn.addEventListener('click', async function(){
+    const resetAlarm = confirm('비밀번호를 재설정 하시겠습니까? 기존 비밀번호를 먼저 확인합니다.');
     if(!resetAlarm) return;
 
+    // 기존 비밀번호 확인 단계
+    const currentPw = prompt('현재 비밀번호를 입력하세요:');
+    if(!currentPw) return;
+
+    const savePw = localStorage.getItem('firstPw');
+    const isHashMode = localStorage.getItem("isHashMode");
+    
+    let comparePw = currentPw.trim();
+    if (isHashMode === "true") {
+      comparePw = await sha256(comparePw);
+    }
+
+    // 현재 비밀번호가 맞는지 확인
+    if(comparePw !== savePw){
+      alert('현재 비밀번호가 일치하지 않습니다.');
+      return;
+    }
+
+    // 비밀번호 확인 성공 → 재설정 모드 진입
+    alert('확인되었습니다. 새로운 비밀번호를 입력해주세요.');
     resetMode = true;
     userInput.placeholder = "새로운 비밀번호를 입력하세요";
     userInput.value = '';
