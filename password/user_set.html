@@ -91,6 +91,11 @@ document.addEventListener("DOMContentLoaded", function(){
 
       alert('비밀번호가 재설정 되었습니다. 로그인 해주세요.');
 
+      // 에러 메시지 초기화
+      document.getElementById("msg").textContent = "";
+      const existingHint = document.getElementById("hint");
+      if(existingHint) existingHint.remove();
+
       resetMode = false;
       userInput.placeholder = "비밀번호를 입력하세요";
       userInput.value = '';
@@ -114,6 +119,11 @@ document.addEventListener("DOMContentLoaded", function(){
     }
 
     if (comparePw === savePw) {
+      // 에러 메시지 초기화
+      document.getElementById("msg").textContent = "";
+      const existingHint = document.getElementById("hint");
+      if(existingHint) existingHint.remove();
+      
       sessionStorage.setItem("memoAccess2", "ok");
       alert('로그인 성공! 페이지로 이동합니다.');
       location.href = "https://taeeun-k.github.io/memoNote/index.html";
@@ -158,6 +168,12 @@ document.addEventListener("DOMContentLoaded", function(){
 
     // 비밀번호 확인 성공 → 재설정 모드 진입
     alert('확인되었습니다. 새로운 비밀번호를 입력해주세요.');
+    
+    // 에러 메시지 초기화
+    document.getElementById("msg").textContent = "";
+    const existingHint = document.getElementById("hint");
+    if(existingHint) existingHint.remove();
+    
     resetMode = true;
     userInput.placeholder = "새로운 비밀번호를 입력하세요";
     userInput.value = '';
