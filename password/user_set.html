@@ -13,11 +13,12 @@
     .inputErr::placeholder { color: rgb(255, 0, 0); }
 
     h1 {text-align: center; margin-bottom: 20px; color: #333;}
-    form {max-width: 400px; margin: 0 auto; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);}
+    form {position: relative; width: 400px; min-width: 400px; margin: 0 auto; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);}
 
     label {display: block; margin-bottom: 10px; font-weight: bold; color: #555;}
-    input[type="password"] {width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px;}
-    button.btn_submit {width: 100%; padding: 10px; background-color: #4ca7fd; color: white; border: none; border-radius: 4px; font-size: 16px;}
+    input[type="password"] {width: 100%; padding: 10px; margin-bottom: 5px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px;}
+    button.btn_submit {width: 100%; padding: 10px; margin-top: 15px; background-color: #4ca7fd; color: white; border: none; border-radius: 4px; font-size: 16px;}
+    span.firstPwTxt {display: block; height: 16px; font-size: 11px; color: #999; text-align: left; line-height: 16px; }
     p#msg {margin-top: 10px; font-size: 12px; font-weight: bold;}
     span#hint {display: block; color: #777777; font-size: 10px; text-align: right;}
 
@@ -30,6 +31,7 @@
   <form id="pwForm">
     <label for="userPassword">비밀번호 입력:</label>
     <input type="password" id="userPassword" name="userPassword" placeholder="비밀번호를 입력하세요">
+    <span class="firstPwTxt">초기 비밀번호 : 1004</span>
     <button type="submit" class="btn_submit">확인</button>
     <p id="msg" style="color: red; margin-top: 10px;"></p>
 
@@ -59,8 +61,15 @@ document.addEventListener("DOMContentLoaded", function(){
   const userInput = document.querySelector('#userPassword');
   const btnSubmit = document.querySelector('button.btn_submit');
   const resetPwBtn = document.querySelector('button.resetting');
+  const firstPwTxt = document.querySelector('span.firstPwTxt');
 
   let resetMode = false;
+
+  // 페이지 로드 시 해시모드이면 초기 비밀번호 텍스트 숨기기
+  const isHashMode = localStorage.getItem("isHashMode");
+  if(firstPwTxt && isHashMode === "true"){
+    firstPwTxt.style.visibility = "hidden";
+  }
 
   document.getElementById('pwForm').addEventListener('submit', e => e.preventDefault());
 
@@ -88,6 +97,9 @@ document.addEventListener("DOMContentLoaded", function(){
       const hashedPw = await sha256(inputPw);
       localStorage.setItem("firstPw", hashedPw);
       localStorage.setItem("isHashMode", "true");
+
+      // 초기 비밀번호 텍스트 숨기기
+      firstPwTxt.style.visibility = "hidden";
 
       alert('비밀번호가 재설정 되었습니다. 로그인 해주세요.');
 
@@ -154,6 +166,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
     const savePw = localStorage.getItem('firstPw');
     const isHashMode = localStorage.getItem("isHashMode");
+    const firstPwTxt = document.querySelector('span.firstPwTxt');
     
     let comparePw = currentPw.trim();
     if (isHashMode === "true") {
