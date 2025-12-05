@@ -52,7 +52,7 @@
     }
     //초기 비밀번호 기본값
     if(!sessionStorage.getItem("hashPw")){
-      sessionStorage.setItem("hashPw", "bbb3cb7e622c12f9399c023789d8662c2668faa0d51fc916ff9a2f94d561356c");
+      sessionStorage.setItem("hashPw", "ea8b0bbd92e422da8b057af612ae122acb1adf938777330b60fd713cf35e3640");
     }
     
     const userInput = document.querySelector('#userPassword');  //비밀번호 입력창
@@ -88,7 +88,7 @@
 
         //입력값을 해시로 변환하여 저장
         const hashedPw = await sha256(inputPw);
-        sessionStorage.setItem("memoAccess2", hashedPw);
+        sessionStorage.setItem("hashPw", hashedPw);
         alert('비밀번호가 재설정 되었습니다. 로그인 해주세요.');
 
         //플래그 초기화 및 입력창 초기화
