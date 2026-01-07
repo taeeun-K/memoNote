@@ -91,7 +91,7 @@ section .memoList ul.memo   {width: 100%;}
 section .memoList ul.memo li   {position: relative; padding: 10px 10px 10px 10px; margin-bottom: 8px; width: 100%; list-style: none; border: 1px solid rgb(150, 150, 150); border-radius: 8px; box-sizing: border-box; background-color: #fff; cursor: pointer;} 
 section .memoList ul.memo li h2    {width: 100%; font-size: 15px; font-weight: 600; font-family: 'KyoboHandwriting2019'; letter-spacing: 1.5px;} /*제목*/
 section .memoList ul.memo li span   {display: none; margin-bottom: 5px; width: 100%; font-size: 10px; font-family: 'KyoboHandwriting2019';} /*날짜*/
-section .memoList ul.memo li p   {display: none; width: 100%; font-size: 13px; font-family: 'KyoboHandwriting2019'; letter-spacing: 1.1px;} /*내용*/
+section .memoList ul.memo li p   {display: none; width: 100%; font-size: 13px; font-family: 'KyoboHandwriting2019'; letter-spacing: 1.1px; word-wrap: break-word; word-break: break-word; overflow-wrap: break-word;} /*내용*/
 section .memoList ul.memo li button   {position: absolute; bottom: 6px; display: none; padding:3px 8px; width: 40px; font-size: 10px; color: #fff; background-color:#000; border-radius: 8px; outline: none; border: none; letter-spacing: 1.2px; box-sizing: border-box; font-family: 'DaeguBukseongro';} /*버튼*/
 section .memoList ul.memo li button.delBtn   {right: 56px;} /*삭제*/
 section .memoList ul.memo li button.editBtn   {right: 10px;} /*수정*/
