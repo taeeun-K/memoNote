@@ -156,6 +156,11 @@
       }
     })
     this.resetBtn.addEventListener('click', function(e){ //전체삭제
+      //전체삭제 버튼 클릭 시 확인창 띄우기
+      if(!confirm("정말로 모든 메모를 삭제하시겠습니까?")){
+        return false; //취소 시 함수 종료
+      }
+
       memo.menoArr = []
       memo.setStorage()
       memo.write();
