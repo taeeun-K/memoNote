@@ -173,7 +173,7 @@
     memo.menoArr =  JSON.parse(localStorage.getItem('memos2'));
   },
   openClose : function(){  //열렸다 닫혔다
-    const listBoxes = document.querySelectorAll("li");
+    const listBoxes = document.querySelectorAll("li h2.tit");
     listBoxes.forEach(listBox => { 
       listBox.addEventListener("click", () => { 
         if(listBox.classList.contains("open")){
