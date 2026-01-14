@@ -174,7 +174,7 @@
   getStorage : function(){
     memo.menoArr =  JSON.parse(localStorage.getItem('memos2'));
   },
-  openClose : function(){  //열렸다 닫혔다
+  openClose : function(){  //열렸다 닫혔다  h2영역만 클릭영역으로 지정 _260114
     const h2List = document.querySelectorAll("li h2.tit");
     h2List.forEach(h2 => { 
       h2.addEventListener("click", (e) => { 
