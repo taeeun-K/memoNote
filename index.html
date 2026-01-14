@@ -112,7 +112,9 @@
       this.memoInput.classList.remove('edit');
       this.memoInput.classList.add('save');
       
-      this.openClose();  //열닫함수 호출함
+      setTimeout(() => {
+        this.openClose();  //열닫함수 호출함
+      }, 0);
     },
     edit : function(btn){ //수정함수
       var li = btn.closest(".memoLis");
@@ -173,16 +175,20 @@
     memo.menoArr =  JSON.parse(localStorage.getItem('memos2'));
   },
   openClose : function(){  //열렸다 닫혔다
-    const listBoxes = document.querySelectorAll("li h2.tit");
-    listBoxes.forEach(listBox => { 
-      listBox.addEventListener("click", () => { 
-        if(listBox.classList.contains("open")){
-          listBox.classList.remove("open");
+    const h2List = document.querySelectorAll("li h2.tit");
+    h2List.forEach(h2 => { 
+      h2.addEventListener("click", (e) => { 
+        e.stopPropagation(); // 이벤트 전파 막기
+        const li = h2.closest('li'); // h2의 부모 li 찾기
+        
+        if(li.classList.contains("open")){
+          li.classList.remove("open");
         }else{
-          listBoxes.forEach(lis => { 
-            lis.classList.remove("open");
+          // 모든 li의 open 클래스 제거
+          document.querySelectorAll("li.memoLis").forEach(item => { 
+            item.classList.remove("open");
           })
-          listBox.classList.add("open");
+          li.classList.add("open");
         }
       });
     });
