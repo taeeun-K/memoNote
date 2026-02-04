@@ -65,6 +65,8 @@ document.addEventListener("DOMContentLoaded", function(){
 
   let resetMode = false;
 
+  userInput.focus();
+
   // 페이지 로드 시 해시모드이면 초기 비밀번호 텍스트 숨기기
   const isHashMode = localStorage.getItem("isHashMode");
   if(firstPwTxt && isHashMode === "true"){
@@ -198,3 +200,4 @@ document.addEventListener("DOMContentLoaded", function(){
 
 </body>
 </html>
+
